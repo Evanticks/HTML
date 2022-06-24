@@ -2,15 +2,13 @@
 import os
 from flask import Flask, render_template, request
 app = Flask(__name__)
-from misfunciones import buscar
-
 import json
 with open("static/MSX.json") as fichero:
     datos=json.load(fichero)
 
 @app.route('/')
-def index():
-    return render_template("index.html")
+def inicio():
+    return render_template("inicio.html")
 
 @app.route('/juegos')
 def juegos():
@@ -19,13 +17,20 @@ def juegos():
 
 @app.route('/lista_juegos',methods=["POST"])
 def lista_juegos():
+    juego=[]
     texto=request.form.get("texto")
-    juegos=buscar(texto)
-    for juego in juegos:
-        if juego.get("id") == 1:
-            return render_template("lista_juegos.html",juegos=datos)
-        else:
-            return render_template("lista_juegos.html",juegos=juegos)
+    print(texto)
+    error=True
+    for dato in datos:
+        nombre=str(dato.get("nombre"))
+        if nombre.startswith(texto):
+            diccionario={"nombre":dato.get("nombre"),"id":dato.get("id"),"desarrollador":dato.get("desarrollador")}
+            juego.append(diccionario)
+            error=False
+    if error == False:    
+        return render_template("lista_juegos.html",juego=juego)
+    else:
+        return render_template("lista_juegos_error.html",juego=juego)
 
 
 
@@ -36,6 +41,6 @@ def juego(id):
             return render_template("juego.html",dato=dato)
 
 
-port=os.environ["PORT"]
-app.run('0.0.0.0',int(port),debug=False)
-#app.run("0.0.0.0",5000,debug=True)
+#port=os.environ["PORT"]
+#app.run('0.0.0.0',int(port),debug=False)
+app.run("0.0.0.0",5000,debug=True)
