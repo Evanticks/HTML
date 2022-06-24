@@ -9,8 +9,8 @@ with open("static/MSX.json") as fichero:
     datos=json.load(fichero)
 
 @app.route('/')
-def inicio():
-    return render_template("inicio.html")
+def index():
+    return render_template("index.html")
 
 @app.route('/juegos')
 def juegos():

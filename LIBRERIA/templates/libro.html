@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+<title>{% block title %}Lista de juegos.{% endblock %}</title>
+    {% block content %}
+        <div id="h1">
+        {% for libro in detalles -%}
+        <td><img src={{libro.get("thumbnailUrl")}} width="250" height="500"></li>
+        <td><li>Título: {{libro.get("title")}}</li></td>
+        <td><li>Páginas: {{libro.get("pageCount")}}</li></td>
+        <td><li>Autores:</li></td>
+            {% for autor in libro.get("authors") -%}</li></td>
+                {{autor+'.'}}
+            {% endfor %}
+        <td><li>Categoría:</li></td>
+            {% for categoria in libro.get("categories") -%}</li></td>
+                {{categoria+'.'}}
+            {% endfor %}
+            {% if libro.get("status") == "MEAP" %}
+            <td><li>El libro no se ha publicado.</li></td>
+            {% endif %}
+        {% endfor %}
+        {% endblock %}
+        </div>
+  {% block contenido %}
+  {% endblock %}
+</div>
+</body>
+</html>
